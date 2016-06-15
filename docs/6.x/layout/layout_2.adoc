@@ -1,0 +1,20 @@
+
+レイアウトに一貫性のあるWebサイトを作りたい、という要求は、HTMLの致命的な限界をさらけ出した。それは、webページにもマークアップにも継承を行う術がないことだ。一度レイアウトを作った後、他のページでも同じものを使い回せるとしたら、素晴らしくはないだろうか。Wicketが目指しているものの一つは、これまでの限界を超越することだ。
+
+=== マークアップの継承
+
+これまでの章で見てきたように、WicketのページクラスはJavaクラスで出来ている。そのため、親となるページクラスを継承し、サブクラスとなるページクラスを作ることができる。しかし、Wicketの継承はそれだけに留まらない。親クラスのHTMLファイルも継承出来るのだ。
+あるクラスが _WebPage_ クラスを継承する時、それは親クラスのHTMLファイルも継承することになる。これはマークアップ継承と呼ばれる。この概念を理解するために、次の例を見ていこう。 _GenericSitePage_ クラスとGenericSitePage.htmlから成るページがあるとする。このページを継承してオンラインで商品の支払いを行う _OrderCheckOutPage_ クラスを作成した。この時、対応するhtmlファイルを作成しない場合、 _OrderCheckOutPage_ クラスはGenericSitePage.htmlを自身のHTMLファイルとして使用することになる。
+
+image::https://ci.apache.org/projects/wicket/guide/6.x/img/markup-inheritance.png[]
+
+マークアップ継承を使えば、全てのページがサイトレイアウトに準じているかどうか確認する手間が省け、ページレイアウトの管理に役立つ。しかしながら、この恩恵を全て受け入れるためには、マークアップ継承を構成するためのもう一つの重要なコンポーネントを学ばなくてはならない。それは *Panel* だ。
+
+WARNING: もし作成したページクラス、もしくは継承元の親クラスと同名のHTMLファイルが無い場合や、使用するHTMLファイルが指定されていない場合は、例外  _MarkupNotFoundException_ が投げられる。
+
+=== Panel クラス
+
+_Panel_ クラス（ _org.apache.wicket.markup.html.panel.Panel_ ）は、GUIを形成するソースコードとhtmlマークアップを異なるページや異なるwebアプリケーションで再利用することができる特別なコンポーネントで、 _WebPage_ クラスと同じく _org.apache.wicket.MarkupContainer_ を継承している。
+
+image::https://ci.apache.org/projects/wicket/guide/6.x/img/page-panel-hierarchy.png[]
+

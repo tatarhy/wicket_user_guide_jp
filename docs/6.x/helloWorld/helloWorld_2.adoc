@@ -1,0 +1,94 @@
+
+この節では、Wicketのページと _Label_ と呼ばれる組み込みコンポーネントを利用した、伝統のHello
+World!の例をみせよう（このコードはHelloWorldExampleのものである）。これはこのガイドの最初の例なので、Javaコードの前に、Wicketアプリケーションを最初から構築するために必要な一般的な内容も紹介する。
+
+NOTE: このガイドの全てのプロジェクトの雛形はApache Mavenを使って生成している。Apache Mavenを用いてWicketアプリケーションを構築する方法は http://wicket.apache.org/start/quickstart.html や本ガイド付録Aに記載している。
+
+=== Wicketアプリケーションの構造
+
+Wicketアプリケーションは標準的なJavaEEのWebアプリケーションなので、WEB-INFフォルダ内のweb.xmlファイルを介して展開される。
+
+image::https://ci.apache.org/projects/wicket/guide/6.x/img/webinf.png[]
+
+_図 : Wicketアプリケーションの標準的なディレクトリ構造_
+
+web.xmlでは、WebのリクエストをこのWicketアプリケーションに送るためのServletフィルタ（ _org.apache.wicket.Protocol.http.WicketFileter_ クラス）を宣言する。
+
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+    <display-name>Wicket Test</display-name>
+    <filter>
+        <filter-name>TestApplication</filter-name>
+        <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+        <init-param>
+          <param-name>applicationClassName</param-name>
+          <param-value>org.wicketTutorial.WicketApplication</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>TestApplication</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>
+----
+
+WicketFilterを設定する際は、通常のServletフィルタを設定する時と同様に _<filter-mapping>_ タグを使用する。上記のweb.xmlの例では、全てのURLをWicketFilterとマップした。Servlet 3 以降のバージョンを利用する場合、@WebFilterアノテーションを用いることでクラス内で設定を行うことができる。
+
+[source,java]
+----
+@WebFilter(value = "/*", initParams = { @WebInitParam(name = "applicationClassName", value = "com.mycompany.WicketApplication"), 
+				@WebInitParam(name="filterMappingUrlPattern", value="/*") })
+public class ProjectFilter extends WicketFilter {
+	
+}
+----
+
+
+NOTE: WicketはDEVELOPMENT（開発）とDEPLOYMENT（運用）の2つのモードでアプリケーションを動作させることができる。開発モードでは、Exceptionの全てのスタックトーレスの表示、Ajaxデバッグウィンドウといった、アプリケーションの開発を助けるいくつかの特別な機能が有効になる。運用モードでは、これらの機能が無効となり、パフォーマンスやリソース消費が最適化される。このガイドのプロジェクト例では開発モードを標準にしている。<<maven.adoc#switching-wicket-to-deployment-mode,24.1節の「運用モードへのWikcetの切り替え」>>では、これらのモードの詳細だけではなく、どちらか一方を選択する方法を紹介する。ただしどの場合においても、運用モードに切り替えること無くアプリケーションを運用環境に配置してはいけない。
+
+
+=== Applicationクラス
+
+上記のweb.xmlを見ると、 _applicationClassName_ というパラメータがWicketフィルタで提供されている。この値は _org.apache.wicket.Application_ のサブクラスの完全修飾（省略されていない）クラス名である。このサブクラスはWicket上に構築されたアプリケーションを表し、サーバ起動時の設定を行うこととなる。基本的なWicketアプリケーションを構築する場合、サーブレットとの密接な統合を提供するApplicationクラスのサブクラスである _org.apache.wicket.protocol.http.WebApplication_ クラスがを使用する。
+_Application_ クラスは、アプリケーションの設定を行うメソッドが用意されており、オーバーライドして使用する。設定用メソッドの1つである _getHomePage()_ は、必ず設定が必要となるため次のようにabstract宣言されている:
+
+[source,java]
+----
+public abstract Class<? extends Page> getHomePage()
+----
+
+名前から分かるように、このメソッドにはアプリケーションのホームページとなるページが記載される。他の重要なメソッドとして _init()_ がある:
+
+[source,java]
+----
+protected void init()
+----
+
+このメソッドはWebサーバ（Tomcat、Jettyなど）によってアプリケーションが起動したときに呼び出されるので設定用のコードを書くのに最適な場所である。 _Application_ クラスは _org.apache.wicket.settings_ パッケージ内のインターフェースとしてまとめられた設定項目を操作できるようにする。開発者はgetterメソッドを通じて、各種設定にアクセスできる。
+
+このアプリケーションのインスタンスはstaticメソッドである _Application.get()_ を呼び出すことでいつでもコード上に呼び出すことができる。このメソッドの詳細は<<requestProcessing.adoc#the-director-of-request-processing-requestcycle,9.3節>>で紹介する。HelloWorldExampleプロジェクトのアプリケーションクラスの内容は次の通りである:
+
+[source,java]
+----
+public class WicketApplication extends WebApplication
+{    	
+	@Override
+	public Class<? extends WebPage> getHomePage()
+	{
+		return HomePage.class;
+	}
+
+	@Override
+	public void init()
+	{
+		super.init();
+		// add your configuration here
+	}
+}
+----
+
+これは非常に基本的なWicketアプリケーションの例なので、 _init_ メソッド内の記述は必要ではない。アプリケーションのホームページは'HomePage'クラスである。次の段落では、このページの実装方法と、Wicketでページを作るための制約を見ていこう。
+
+NOTE: アプリケーションの始動方法は、 _WicketFilter_ をweb.xmlの内部の記述子として宣言することだけではない。もしフィルターの代わりにサーブレットを使用する場合は、 _org.apache.wicket.protocol.http.WicketServlet_ クラスが使える。

@@ -1,0 +1,99 @@
+
+Wicketでは _<wicket:child>_ タグを用いてマークアップの継承を行うことが出来る。親マークアップ内にこのタグを宣言することで、子となるページもしくはパネルのマークアップを**挿入**する位置を定義できる。 _<wicket:child>_ を持つ親ページの例は以下のようになる。
+
+[source,html]
+----
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+</head>
+<body>
+	This is parent body!
+	<wicket:child/>
+</body>
+</html>
+----
+
+子ページもしくは子パネルのマークアップは _<wicket:extend>_ タグの中になければならない。 _<wicket:extend>_ の中にあるマークアップだけが使用される。子ページのマークアップは以下のようになる。
+
+[source,java]
+----
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+</head>
+<body>
+    <wicket:extend>
+          This is child body!
+	</wicket:extend>
+</body>
+</html>
+----
+
+上の2つのページをまとめると、最終的に子ページとして生成されるマークアップは以下のようになる。
+
+[source,html]
+----
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	This is parent body!
+	<wicket:child>
+       <wicket:extend>
+           This is child body!
+	   </wicket:extend>
+    </wicket:child>
+</body>
+</html>
+----
+
+=== テンプレートページを見直す
+
+_<wicket:child>_ タグを5.3で作成したテンプレートページに用いると、以下のようになる。
+
+[source,html]
+----
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+</head>
+<body>
+<div id="header" wicket:id="headerPanel">header</div>
+<div id="body">
+	<div id="menu" wicket:id="menuPanel">menu</div>
+	<wicket:child/>
+</div>
+<div id="footer" wicket:id="footerPanel">footer</div>
+</body>
+</html>
+----
+
+コンテンツエリアとして用意していた _<div>_ タグを _<wicket:child>_ タグに置き換えた。このテンプレートを使ってログインページ( _SimpleLoginPage_ ) を作る場合、HTMLは以下のようになる。
+
+[source,html]
+----
+<html>
+<head>
+</head>
+<body>
+   <wicket:extend>
+    <div style="margin: auto; width: 40%;">
+       <form  id="loginForm" method="get">
+         <fieldset id="login" class="center">
+            <legend >Login</legend>               
+            <span >Username: </span><input type="text" id="username"/><br/>                                                                  
+            <span >Password: </span><input type="password" id="password" />
+            <p>
+               <input type="submit" name="login" value="login"/>
+            </p>
+         </fieldset>
+      </form>
+    </div>   
+   </wicket:extend>
+</body>
+</html>
+----
+
+この方法をとれば、 _LoginPanel_ のような専用のパネルをコンテンツエリアとして作る必要は無くなる。複雑なGUIを操作する必要の無い場合に有効な方法だ。

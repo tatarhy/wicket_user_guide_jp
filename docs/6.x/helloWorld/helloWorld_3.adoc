@@ -1,0 +1,54 @@
+
+Wicketアプリケーションの動作が成功するためには、上で見た _Application_ クラスの _getHomePage()_ メソッドが返すホームページのクラスが見つからなくてはならない。WicketのWebページは、 _org.apache.wicket.WebPage_ のサブクラスである。このサブクラスにはwicketがHTMLマークアップを生成するためのテンプレートとなるHTMLファイルが必要である。このファイルは通常の標準的なHTMLファイルである（拡張子はhtmlでなければならない）。
+
+通常ではこのHTMLファイルはページクラスと同じ名前・同じパッケージにする必要がある:
+
+image::https://ci.apache.org/projects/wicket/guide/6.x/img/samepackage.png[]
+
+_図 : ページクラスと対応するHTMLファイル_
+
+もし開発者がクラスとHTMLをそばに置いておくのが嫌なら（開発者はHTMLをまとめて違うフォルダにいれたいとしよう）、HTMLファイルを見つける事ができる場所をWicketの設定に記載することができる。これは[15.9節](15.md)で補足する。
+
+_HomePage_ クラスのJavaコードは次の様になる：
+
+[source,java]
+----
+package org.wicketTutorial;
+
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.WebPage;
+
+public class HomePage extends WebPage {	
+    public HomePage() {
+	add(new Label("helloMessage", "Hello WicketWorld!"));
+    }
+}
+----
+
+_WebPage_ クラスのサブクラスとして作られた上記の _HomePage_ クラスは、自身に _Label_ コンポーネントを追加するコンストラクタを定義している。 _add(Component component)_ メソッドはスーパークラスである _org.apache.wicket.MarkupContainer_ で定義されており、親となる _WebPage_ クラスに子コンポーネントを追加することに使われる。 _MarkupContainer_ の詳細は[5.2節]で紹介する。 _org.apache.wicket.markup.html.basic.Label_ クラスはWicketに同梱された最もシンプルなコンポーネントで、自信のコンストラクターの第2引数として渡された文字列を対応するHTMLタグの内部に挿入する。Wicketコンポーネントは、対応するHTMLタグを特定するために文字列のidを持つ（上記の例だと' _helloMessage_ '）。対応するHTMLタグは _wicket:id_ という特別な属性を必ず持ち、値をコンポーネントのidと同一に必要がある（idの比較では大文字・小文字が厳密に区別される）。
+
+_HomePage_ クラスのためのHTMLマークアップ（HomePage.html）は次の様になる：
+
+[source,html]
+----
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Apache Wicket HelloWorld</title>
+	</head>
+	<body>
+		
+		<div wicket:id="helloMessage">
+		[Label's message goes here]
+		</div>
+	</body>
+</html>
+----
+
+_wicket:id_ 属性は _Label_ コンポーネントのidと一致するように設定されていることが分かる。この例を動作させると、 _<div>_ タグの内側に _Hello WicketWorld!_ とテキストが表示される。
+
+NOTE:  _Label_ はタグの本来の内容（例では _Label's message goes here_ と書かれた部分）をStringで渡された文字列（例では _Hello WicketWorld!_ ）に上書きする。
+
+WARNING: タグの _wicket:id_ 属性に一致するコンポーネントがJavaコード側で追加されなかった場合は、Wicketは _ComponentNotFound Exception_ をスローする。逆に、Javaコードの中に追加されたコンポーネントと一致する _wicket:id_ 属性がHTML側に記述されなかった場合は、Wicketは _WicketRuntimeException_ をスローする。

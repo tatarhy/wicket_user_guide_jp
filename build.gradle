@@ -1,0 +1,12 @@
+plugins {
+  id "org.asciidoctor.convert" version "1.5.3"
+}
+
+asciidoctor {
+  sourceDir = file('docs')
+  sources {
+      include '6.x/index.adoc'
+  }
+  outputDir = file("${buildDir}/docs")
+
+}

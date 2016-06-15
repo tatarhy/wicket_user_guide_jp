@@ -1,0 +1,54 @@
+
+Webアプリケーションとユーザのやりとりの基本的な形は、リンクを使ったページの移動である。HTMLのリンクは基本的に、他のWebリソース（大抵、他のページ）への目印である。Wicketはリンクを _org.apache.wicket.markup.html.link.Link_ として実装しているが、フレームワークのコンポーネント指向の性質のために、このコンポーネントは伝統的なHTMLのリンクとは全く違ったものになっている。Wicketのリンクは"click"イベントハンドラ（つまりユーザがクリックしたときに、サーバサイドでいくつかの動作を実行する目的のもの）として考えることができる。
+
+そのため、開発者は _onClick()_ メソッドが _Link_ クラスの中で呼び出されるのを見ても驚かないでほしい。下は、何も実装されていない _onClick_ メソッドを内包した _Link_ を持つページの例である：
+
+[source,java]
+----
+public class HomePage extends WebPage {
+	public HomePage(){
+		add(new Link("id"){
+			@Override
+			public void onClick() {
+				//link code goes here
+		    }			
+		});
+	}
+}		
+----
+
+通常では、 _onClick_ が実行された後、Wicketは現在のページをクライアントのWebブラウザに返送する。もし違うページへ移動させたい場合は、 _Component_ クラスの _setResponsePage_ メソッドを呼び出す：
+
+[source,java]
+----
+public class HomePage extends WebPage {
+	public HomePage(){
+		add(new Link("id"){
+			@Override
+			public void onClick() {			   
+                         //we redirect browser to another page.
+                         setResponsePage(AnotherPage.class);
+			}			
+		});
+	}
+}
+----
+
+上記の例では、 _setResponsePage_ に移動先のクラスが入力されている。この方法では、リンクがクリックされるたびに _AnotherPage_ のインスタンスが生成される。もう一つの例として、ページのクラスの代わりに _setResponsePage_ にページのインスタンスを入力する方法がある:
+
+[source,java]
+----
+@Override
+public void onClick() {			   
+	//we redirect browser to another page.
+	AnotherPage anotherPage = new AnotherPage();
+	setResponsePage(anotherPage);
+}
+----
+
+上記2つの違いは、<<page-versioning-and-caching,8章>>のステートフルとステートレスのページで図説する。今ここでは、両者は同等であると考えておこう。
+
+Wicketは、これまで紹介したコンポーネントの他に、スタティックなURL、Ajax拡張されたリンク、ファイルダウンロードのためのリンク、外部のページのためのリンクなどといった、リッチなリンクコンポーネントセットを備えている。これらは<<wicket-links-and-url-generation,10章>>で説明する。
+
+NOTE:  Linkの内容（例えば、テキストや画像をリンクに含める）を記述するには _setBody_ メソッドを利用する。このメソッドにはWicketの標準的な _Model_ を用いる。詳細は<<wicket-models-and-forms,11章>>にて説明する。
+
