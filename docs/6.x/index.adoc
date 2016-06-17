@@ -7,6 +7,8 @@
 :toc:       left
 :toclevels: 1
 
+include::colophon.adoc[]
+
 == Introduction
 
 include::introduction.adoc[]
