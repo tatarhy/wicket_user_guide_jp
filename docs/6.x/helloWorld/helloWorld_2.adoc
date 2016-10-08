@@ -1,5 +1,5 @@
 
-この節では、Wicketのページと _Label_ と呼ばれる組み込みコンポーネントを利用した、伝統のHello
+この節では、Wicketのページと `Label` と呼ばれる組み込みコンポーネントを利用した、伝統のHello
 World!の例をみせよう（このコードはHelloWorldExampleのものである）。これはこのガイドの最初の例なので、Javaコードの前に、Wicketアプリケーションを最初から構築するために必要な一般的な内容も紹介する。
 
 NOTE: このガイドの全てのプロジェクトの雛形はApache Mavenを使って生成している。Apache Mavenを用いてWicketアプリケーションを構築する方法は http://wicket.apache.org/start/quickstart.html や本ガイド付録Aに記載している。
@@ -12,7 +12,7 @@ image::https://ci.apache.org/projects/wicket/guide/6.x/img/webinf.png[]
 
 _図 : Wicketアプリケーションの標準的なディレクトリ構造_
 
-web.xmlでは、WebのリクエストをこのWicketアプリケーションに送るためのServletフィルタ（ _org.apache.wicket.Protocol.http.WicketFileter_ クラス）を宣言する。
+web.xmlでは、WebのリクエストをこのWicketアプリケーションに送るためのServletフィルタ（ `org.apache.wicket.Protocol.http.WicketFileter` クラス）を宣言する。
 
 [source,xml]
 ----
@@ -34,7 +34,7 @@ web.xmlでは、WebのリクエストをこのWicketアプリケーションに�
 </web-app>
 ----
 
-WicketFilterを設定する際は、通常のServletフィルタを設定する時と同様に _<filter-mapping>_ タグを使用する。上記のweb.xmlの例では、全てのURLをWicketFilterとマップした。Servlet 3 以降のバージョンを利用する場合、@WebFilterアノテーションを用いることでクラス内で設定を行うことができる。
+WicketFilterを設定する際は、通常のServletフィルタを設定する時と同様に `<filter-mapping>` タグを使用する。上記のweb.xmlの例では、全てのURLをWicketFilterとマップした。Servlet 3 以降のバージョンを利用する場合、@WebFilterアノテーションを用いることでクラス内で設定を行うことができる。
 
 [source,java]
 ----
@@ -51,24 +51,24 @@ NOTE: WicketはDEVELOPMENT（開発）とDEPLOYMENT（運用）の2つのモー�
 
 === Applicationクラス
 
-上記のweb.xmlを見ると、 _applicationClassName_ というパラメータがWicketフィルタで提供されている。この値は _org.apache.wicket.Application_ のサブクラスの完全修飾（省略されていない）クラス名である。このサブクラスはWicket上に構築されたアプリケーションを表し、サーバ起動時の設定を行うこととなる。基本的なWicketアプリケーションを構築する場合、サーブレットとの密接な統合を提供するApplicationクラスのサブクラスである _org.apache.wicket.protocol.http.WebApplication_ クラスがを使用する。
-_Application_ クラスは、アプリケーションの設定を行うメソッドが用意されており、オーバーライドして使用する。設定用メソッドの1つである _getHomePage()_ は、必ず設定が必要となるため次のようにabstract宣言されている:
+上記のweb.xmlを見ると、 `applicationClassName` というパラメータがWicketフィルタで提供されている。この値は `org.apache.wicket.Application` のサブクラスの完全修飾（省略されていない）クラス名である。このサブクラスはWicket上に構築されたアプリケーションを表し、サーバ起動時の設定を行うこととなる。基本的なWicketアプリケーションを構築する場合、サーブレットとの密接な統合を提供するApplicationクラスのサブクラスである `org.apache.wicket.protocol.http.WebApplication` クラスがを使用する。
+`Application` クラスは、アプリケーションの設定を行うメソッドが用意されており、オーバーライドして使用する。設定用メソッドの1つである `getHomePage()` は、必ず設定が必要となるため次のようにabstract宣言されている:
 
 [source,java]
 ----
 public abstract Class<? extends Page> getHomePage()
 ----
 
-名前から分かるように、このメソッドにはアプリケーションのホームページとなるページが記載される。他の重要なメソッドとして _init()_ がある:
+名前から分かるように、このメソッドにはアプリケーションのホームページとなるページが記載される。他の重要なメソッドとして `init()` がある:
 
 [source,java]
 ----
 protected void init()
 ----
 
-このメソッドはWebサーバ（Tomcat、Jettyなど）によってアプリケーションが起動したときに呼び出されるので設定用のコードを書くのに最適な場所である。 _Application_ クラスは _org.apache.wicket.settings_ パッケージ内のインターフェースとしてまとめられた設定項目を操作できるようにする。開発者はgetterメソッドを通じて、各種設定にアクセスできる。
+このメソッドはWebサーバ（Tomcat、Jettyなど）によってアプリケーションが起動したときに呼び出されるので設定用のコードを書くのに最適な場所である。 `Application` クラスは `org.apache.wicket.settings` パッケージ内のインターフェースとしてまとめられた設定項目を操作できるようにする。開発者はgetterメソッドを通じて、各種設定にアクセスできる。
 
-このアプリケーションのインスタンスはstaticメソッドである _Application.get()_ を呼び出すことでいつでもコード上に呼び出すことができる。このメソッドの詳細は<<requestProcessing.adoc#the-director-of-request-processing-requestcycle,9.3節>>で紹介する。HelloWorldExampleプロジェクトのアプリケーションクラスの内容は次の通りである:
+このアプリケーションのインスタンスはstaticメソッドである `Application.get()` を呼び出すことでいつでもコード上に呼び出すことができる。このメソッドの詳細は<<requestProcessing.adoc#the-director-of-request-processing-requestcycle,9.3節>>で紹介する。HelloWorldExampleプロジェクトのアプリケーションクラスの内容は次の通りである:
 
 [source,java]
 ----
@@ -89,6 +89,6 @@ public class WicketApplication extends WebApplication
 }
 ----
 
-これは非常に基本的なWicketアプリケーションの例なので、 _init_ メソッド内の記述は必要ではない。アプリケーションのホームページは'HomePage'クラスである。次の段落では、このページの実装方法と、Wicketでページを作るための制約を見ていこう。
+これは非常に基本的なWicketアプリケーションの例なので、 `init` メソッド内の記述は必要ではない。アプリケーションのホームページは'HomePage'クラスである。次の段落では、このページの実装方法と、Wicketでページを作るための制約を見ていこう。
 
-NOTE: アプリケーションの始動方法は、 _WicketFilter_ をweb.xmlの内部の記述子として宣言することだけではない。もしフィルターの代わりにサーブレットを使用する場合は、 _org.apache.wicket.protocol.http.WicketServlet_ クラスが使える。
+NOTE: アプリケーションの始動方法は、 `WicketFilter` をweb.xmlの内部の記述子として宣言することだけではない。もしフィルターの代わりにサーブレットを使用する場合は、 `org.apache.wicket.protocol.http.WicketServlet` クラスが使える。

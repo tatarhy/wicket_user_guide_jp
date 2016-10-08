@@ -8,7 +8,7 @@
 
 image::https://ci.apache.org/projects/wicket/guide/6.x/img/header-area.png[]
 
-_HeaderPanel_ という名前のパネルを、HeaderPanel.htmlとして以下のように作ることができる。
+`HeaderPanel` という名前のパネルを、HeaderPanel.htmlとして以下のように作ることができる。
 
 [source,html]
 ----
@@ -36,7 +36,7 @@ _HeaderPanel_ という名前のパネルを、HeaderPanel.htmlとして以下�
 <html>
 ----
 
-パネルのJavaクラス側では、その名の通り _Panel_ クラスを継承する必要がある。
+パネルのJavaクラス側では、その名の通り `Panel` クラスを継承する必要がある。
 
 [source,java]
 ----
@@ -84,7 +84,7 @@ public class HeaderPanel extends Panel {
 </html>
 ----
 
-このHTMLは、左メニューを持つ汎用的なレイアウトを提供する。対応するエリアの入れ物となっている4つの _divタグ_ があることを心に留めておいて欲しい。このページのJavaクラスは、ページとパネルを結びつけるコードを含んでいる。
+このHTMLは、左メニューを持つ汎用的なレイアウトを提供する。対応するエリアの入れ物となっている4つの `div` タグがあることを心に留めておいて欲しい。このページのJavaクラスは、ページとパネルを結びつけるコードを含んでいる。
 
 [source,java]
 ----
@@ -117,7 +117,7 @@ public class JugTemplate extends WebPage {
 
 === 仕上げに
 
-ここまでを踏まえて、ログインページ( _SimpleLoginPage_ ) を作成しよう。まずはじめに、ログインフォームとなるパネル（ _LoginPanel_ ）が必要だ。このパネルをコンテンツエリアに配置する。HTMLファイルは以下のようになる。
+ここまでを踏まえて、ログインページ( `SimpleLoginPage` ) を作成しよう。まずはじめに、ログインフォームとなるパネル（ `LoginPanel` ）が必要だ。このパネルをコンテンツエリアに配置する。HTMLファイルは以下のようになる。
 
 [source,html]
 ----
@@ -143,7 +143,7 @@ public class JugTemplate extends WebPage {
 </html>
 ----
 
-このパネルのJavaクラスは、パネルクラスを継承するだけだ。ここで作るフォームパネルはデモを目的としているため、実際には動作しないものである。Wicketにおけるフォームの使い方は<<wicket-models-and-forms,11章>>と<<wicket-forms-in-detail,12章>>で説明する。また、ログインページなので左メニューを表示する必要は無い。コンポーネントクラスには、 _setVisible_ メソッドが存在し、コンポーネント自身とコンポーネントにアドされた子コンポーネントの表示・非表示を切り替える事が出来るので、難しい事ではない。
+このパネルのJavaクラスは、パネルクラスを継承するだけだ。ここで作るフォームパネルはデモを目的としているため、実際には動作しないものである。Wicketにおけるフォームの使い方は<<wicket-models-and-forms,11章>>と<<wicket-forms-in-detail,12章>>で説明する。また、ログインページなので左メニューを表示する必要は無い。コンポーネントクラスには、 `setVisible` メソッドが存在し、コンポーネント自身とコンポーネントにアドされた子コンポーネントの表示・非表示を切り替える事が出来るので、難しい事ではない。
 
 ログインページのJavaクラスは以下のようになる。
 

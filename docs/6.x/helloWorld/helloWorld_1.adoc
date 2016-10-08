@@ -5,7 +5,7 @@ Wicketのバイナリパッケージは http://wicket.apache.org
 |===
 |*モジュール名*|*説明*|*依存関係*
 |wicket-core
-|ComponentやApplicationのような、フレームワークのメインクラスが含まれる。
+| `Component` や `Application` のような、フレームワークのメインクラスが含まれる。
 |wicket-request, wicket-util
 
 |wicket-request |Webリクエストの処理に関連するクラスが含まれる。
