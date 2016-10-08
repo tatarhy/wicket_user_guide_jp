@@ -26,7 +26,7 @@ public class HomePage extends WebPage {
 }
 ----
 
-`WebPage` クラスのサブクラスとして作られた上記の `HomePage` クラスは、自身に `Label` コンポーネントを追加するコンストラクタを定義している。 `add(Component component)` メソッドはスーパークラスである `org.apache.wicket.MarkupContainer` で定義されており、親となる `WebPage` クラスに子コンポーネントを追加することに使われる。 `MarkupContainer` の詳細は[5.2節]で紹介する。 `org.apache.wicket.markup.html.basic.Label` クラスはWicketに同梱された最もシンプルなコンポーネントで、自信のコンストラクターの第2引数として渡された文字列を対応するHTMLタグの内部に挿入する。Wicketコンポーネントは、対応するHTMLタグを特定するために文字列のidを持つ（上記の例だと' `helloMessage` '）。対応するHTMLタグは `wicket:id` という特別な属性を必ず持ち、値をコンポーネントのidと同一に必要がある（idの比較では大文字・小文字が厳密に区別される）。
+`WebPage` クラスのサブクラスとして作られた上記の `HomePage` クラスは、自身に `Label` コンポーネントを追加するコンストラクタを定義している。 `add(Component component)` メソッドはスーパークラスである `org.apache.wicket.MarkupContainer` で定義されており、親となる `WebPage` クラスに子コンポーネントを追加することに使われる。 `MarkupContainer` の詳細は <<layout.adoc#_継承がやってきた,5.2節>> で紹介する。 `org.apache.wicket.markup.html.basic.Label` クラスはWicketに同梱された最もシンプルなコンポーネントで、自信のコンストラクターの第2引数として渡された文字列を対応するHTMLタグの内部に挿入する。Wicketコンポーネントは、対応するHTMLタグを特定するために文字列のidを持つ（上記の例だと' `helloMessage` '）。対応するHTMLタグは `wicket:id` という特別な属性を必ず持ち、値をコンポーネントのidと同一に必要がある（idの比較では大文字・小文字が厳密に区別される）。
 
 `HomePage` クラスのためのHTMLマークアップ（HomePage.html）は次の様になる：
 
